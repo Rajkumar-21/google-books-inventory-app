@@ -8,7 +8,7 @@ app = FastAPI()
 # Add CORS middleware
 app.add_middleware(
     CORSMiddleware,
-    allow_origins=["http://localhost:3000"],  # React app's URL
+    allow_origins=["http://localhost:3000", "http://localhost:3001", "http://127.0.0.1:3000", "http://127.0.0.1:3001"],  # React and Next.js app URLs
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
@@ -48,7 +48,7 @@ async def get_all_books(
         "maxResults": results_per_page
     }
     
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(verify=False) as client:
         response = await client.get(GOOGLE_BOOKS_API_URL, params=params)
         if response.status_code != 200:
             raise HTTPException(status_code=response.status_code, detail="Error fetching data from Google Books API")
@@ -90,7 +90,7 @@ async def get_books_by_title(
         "maxResults": results_per_page
     }
     
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(verify=False) as client:
         response = await client.get(GOOGLE_BOOKS_API_URL, params=params)
         if response.status_code != 200:
             raise HTTPException(status_code=response.status_code, detail="Error fetching data from Google Books API")
@@ -132,7 +132,7 @@ async def get_books_by_author(
         "maxResults": results_per_page
     }
     
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(verify=False) as client:
         response = await client.get(GOOGLE_BOOKS_API_URL, params=params)
         if response.status_code != 200:
             raise HTTPException(status_code=response.status_code, detail="Error fetching data from Google Books API")
@@ -174,7 +174,7 @@ async def get_books_by_category(
         "maxResults": results_per_page
     }
     
-    async with httpx.AsyncClient() as client:
+    async with httpx.AsyncClient(verify=False) as client:
         response = await client.get(GOOGLE_BOOKS_API_URL, params=params)
         if response.status_code != 200:
             raise HTTPException(status_code=response.status_code, detail="Error fetching data from Google Books API")
